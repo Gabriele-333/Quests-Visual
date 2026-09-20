@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "net.gabriele333.gabrielequests.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "IconMixin"
+  ],
+  "client": [
+    "ChapterImageButtonMixin",
+    "ChapterImageMixin",
+    "QuestAccessor",
+    "QuestButtonMixin",
+    "QuestPanelMixin",
+    "QuestScreenAccessor",
+    "QuestScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

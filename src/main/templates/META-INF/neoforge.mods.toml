@@ -1,0 +1,121 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+description='''${mod_description}'''
+
+# Mixin config (loaded by FML). All the editor tools hook the FTB Quests client via mixins.
+[[mixins]]
+config="gabrielequests.mixins.json"
+
+# Required dependencies
+[[dependencies."${mod_id}"]]
+modId="neoforge"
+type="required"
+versionRange="${neo_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies."${mod_id}"]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
+
+# GabrieleQuests is an add-on for FTB Quests: without it there is nothing to hook into.
+[[dependencies."${mod_id}"]]
+modId="ftbquests"
+type="required"
+reason="GabrieleQuests augments the FTB Quests editor and cannot run without it."
+versionRange="${ftb_quests_version_range}"
+# Load after FTB Quests so its classes exist before our client mixins run.
+ordering="AFTER"
+side="BOTH"
+
+# -----------------------------------------------------------------------------------------
+# Optional integrations for the "display multiblock" feature.
+#
+# None of these is required to launch (type="optional"): GabrieleQuests never hard-depends
+# on them. Blocks are resolved by registry name, each multiblock type hides itself when its
+# blocks are missing, and the mod-specific render code stays behind ModList.isLoaded guards.
+# These entries are metadata: they list the supported integrations in the mod menu and,
+# through ordering="AFTER", guarantee each mod is fully loaded before GabrieleQuests. The
+# actual "is this mod here?" decision is still made at runtime by the registry lookups, so
+# a blank/any version range ([0,) = every version) is intentional.
+
+# Mekanism (+ Generators) - Dynamic Tank / Induction Matrix / Boiler / Thermal Evaporation
+# Plant / Fission Reactor / Industrial Turbine / Fusion Reactor.
+[[dependencies."${mod_id}"]]
+modId="mekanism"
+type="optional"
+reason="Mekanism display multiblocks (Dynamic Tank, Induction Matrix, Boiler, ...)."
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies."${mod_id}"]]
+modId="mekanismgenerators"
+type="optional"
+reason="Fission Reactor / Industrial Turbine / Fusion Reactor blocks (ships with Mekanism)."
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"
+
+# Applied Energistics 2 - ME Crafting CPU / Quantum Network Bridge.
+[[dependencies."${mod_id}"]]
+modId="ae2"
+type="optional"
+reason="AE2 display multiblocks (ME Crafting CPU, Quantum Network Bridge)."
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"
+
+# Ender IO - Capacitor Bank.
+[[dependencies."${mod_id}"]]
+modId="enderio"
+type="optional"
+reason="Ender IO Capacitor Bank display multiblock."
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"
+
+# Draconic Evolution (+ BrandonsCore, CodeChickenLib) - Draconic Reactor / Energy Core /
+# Fusion Crafting; the reactor and energy-core visuals run through the sandboxed BER phase.
+[[dependencies."${mod_id}"]]
+modId="draconicevolution"
+type="optional"
+reason="Draconic Reactor / Energy Core / Fusion Crafting display multiblocks."
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies."${mod_id}"]]
+modId="brandonscore"
+type="optional"
+reason="Draconic Evolution dependency, used by the reactor/energy-core render phase."
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies."${mod_id}"]]
+modId="codechickenlib"
+type="optional"
+reason="Draconic Evolution dependency, used for the reactor beam render pass."
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"
+
+# Ars Nouveau - Enchanting Apparatus.
+[[dependencies."${mod_id}"]]
+modId="ars_nouveau"
+type="optional"
+reason="Ars Nouveau Enchanting Apparatus display multiblock."
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"
