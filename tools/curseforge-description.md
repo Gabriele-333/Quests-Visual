@@ -6,7 +6,7 @@ With this add-on, you can place real item models, 3D multiblock previews, custom
 
  
 
-The mod also includes useful editing improvements for quest authors, such as box selection with Shift + left drag and the ability to change the shape of multiple selected quests at once.
+The mod also includes useful editing improvements for quest authors: applying a shape to every selected quest in one go, and rotating or flipping a whole selection around a pivot of your choosing.
 
 **Main Features**
 
@@ -17,7 +17,6 @@ The mod also includes useful editing improvements for quest authors, such as box
 *   Add any structure shipped by your modpack, from a single piece to a whole assembled structure
 *   Add portals, frame included, from vanilla and from mods
 *   Rotate supported displays inside the quest page (hold left click and drag)
-*   Faster quest editing with box selection
 *   Apply quest shapes to multiple quests at once
 *   Fast rotate and flip quests
 
@@ -78,3 +77,8 @@ Optional integrations are available for:
   - Ars Nouveau  
   - PneumaticCraft: Repressurized  
   - Mystical Agriculture
+ 
+
+**Requirements**
+
+FTB Quests 2101.1.28 or newer (it brings FTB Library, FTB Teams and Architectury along with it). Tested against the latest release, 2101.1.36.

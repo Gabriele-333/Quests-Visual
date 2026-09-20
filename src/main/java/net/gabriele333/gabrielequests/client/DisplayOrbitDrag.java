@@ -12,8 +12,7 @@ import java.util.WeakHashMap;
 
 /**
  * Render-thread state for the "hold left button to orbit a 3D display" gesture, shared by
- * every {@link OrbitDraggable} icon (display multiblock, mannequin, entity). Same
- * static-flag pattern as {@code BoxSelectState}.
+ * every {@link OrbitDraggable} icon (display multiblock, mannequin, entity).
  *
  * <p><b>Two modes.</b> In edit mode the drag <i>persists</i>: on release the new
  * orientation is written into the icon and the image is re-sent with

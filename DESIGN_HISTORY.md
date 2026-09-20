@@ -6,6 +6,12 @@
 > - identifiers `fmtt2.*` → **`gabrielequests.*`**, icon prefixes `fmtt2-multiblock:` /
 >   `fmtt2-mannequin:` → **`gabrielequests-multiblock:` / `gabrielequests-mannequin:`**;
 > - mixin config `fmtt2-queststools.mixins.json` → **`gabrielequests.mixins.json`**.
+>
+> **§1.1 (the Shift + left-drag box selection) was removed in 1.0.41.** FTB Quests 2101.1.36
+> added an equivalent Alt + left-drag gesture of its own, so the duplicate binding and its
+> injectors are gone; middle-click box selection, which was always FTB's, still works. The
+> section below is kept as a record of how it was built, not as a description of what ships.
+>
 > For the current state, read the source. The rest of this text is historical.
 
 # QuestsTools (inside FMTT2) — Functional specification (version-agnostic)
