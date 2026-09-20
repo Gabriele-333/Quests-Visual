@@ -93,17 +93,35 @@ public abstract class QuestPanelMixin {
     }
 
     /**
-     * FTB Quests runs {@code selectAllQuestsInBox(...)} on release when
-     * {@code grabbed.isMiddle()}. Report {@code true} here as well when our shift box
-     * selection is active so the same selection logic runs for Shift + left-drag.
+     * FTB Quests runs {@code selectAllQuestsInBox(...)} on release when the drag was a
+     * selection box. Report {@code true} here as well when our shift box selection is
+     * active so the same selection logic runs for Shift + left-drag.
+     *
+     * <p><b>Two shapes, because FTB moved this check.</b> Up to 2101.1.35 the test was
+     * inlined here as {@code grabbed.isMiddle()}. 2101.1.36 extracted it into
+     * {@code QuestPanel#isDraggingSelectionBox()} - which also gained FTB's own
+     * Alt + left-drag box selection - so the old call site is simply gone from this
+     * method and an injector that only knows {@code isMiddle} fails to apply, taking the
+     * whole game down with "Critical injection failure" at boot. Both call sites are
+     * listed so one jar or the other matches; {@code require = 1} keeps that honest, so
+     * if a future release renames the predicate again we get the loud failure rather than
+     * a silently dead feature.
      */
     @ModifyExpressionValue(
             method = "mouseReleased",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ldev/ftb/mods/ftblibrary/ui/input/MouseButton;isMiddle()Z",
-                    ordinal = 0
-            )
+            require = 1,
+            at = {
+                    @At(
+                            value = "INVOKE",
+                            target = "Ldev/ftb/mods/ftblibrary/ui/input/MouseButton;isMiddle()Z",
+                            ordinal = 0
+                    ),
+                    @At(
+                            value = "INVOKE",
+                            target = "Ldev/ftb/mods/ftbquests/client/gui/quests/QuestPanel;isDraggingSelectionBox()Z",
+                            ordinal = 0
+                    )
+            }
     )
     private boolean queststools$selectBoxOnRelease(boolean original) {
         return original || BoxSelectState.active;

@@ -21,7 +21,7 @@ import java.util.List;
  * Two things live here:
  *
  * <p><b>1. Shift + left-drag box selection.</b> {@code QuestScreen#drawBackground} decides
- * every frame what to do with the "grabbed" mouse button:
+ * every frame what to do with the "grabbed" mouse button. Up to FTB Quests 2101.1.35:
  * <pre>
  *     if (grabbed.isLeft()) {        // pan the view
  *         ...
@@ -29,9 +29,19 @@ import java.util.List;
  *         ...
  *     }
  * </pre>
+ * and from 2101.1.36, with the branches swapped and the box test extracted into the panel
+ * (where FTB also added its own Alt + left-drag box selection):
+ * <pre>
+ *     if (questPanel.isDraggingSelectionBox()) { // draw the rubber-band selection box
+ *         ...
+ *     } else if (grabbed.isLeft()) {             // pan the view
+ *         ...
+ *     }
+ * </pre>
  * While a Shift + left-drag box selection is active ({@link BoxSelectState#active}) we make
- * {@code isLeft()} report {@code false} (no pan) and {@code isMiddle()} report {@code true}
- * (draw the box) - reusing FTB Quests' own box rendering instead of duplicating it.
+ * the pan predicate report {@code false} and the box predicate report {@code true} - reusing
+ * FTB Quests' own box rendering instead of duplicating it. Each injector lists both shapes
+ * of its predicate so one jar or the other matches.
  *
  * <p><b>2. "Set shape" on the whole selection.</b> We append an item to the object
  * context menu ({@code addObjectMenuItems}) that applies a chosen quest shape to every
@@ -56,13 +66,29 @@ public abstract class QuestScreenMixin {
         return original && !BoxSelectState.active;
     }
 
+    /**
+     * Draw the rubber band while our box selection runs. Two call sites for the same
+     * reason as {@code QuestPanelMixin#queststools$selectBoxOnRelease}: 2101.1.36 replaced
+     * the inlined {@code grabbed.isMiddle()} with {@code questPanel.isDraggingSelectionBox()}
+     * and swapped the branches, so the box is now tested <em>before</em> the pan rather
+     * than after. That reordering costs us nothing - each injector still modifies its own
+     * predicate - but the missing {@code isMiddle} call killed the boot.
+     */
     @ModifyExpressionValue(
             method = "drawBackground",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ldev/ftb/mods/ftblibrary/ui/input/MouseButton;isMiddle()Z",
-                    ordinal = 0
-            )
+            require = 1,
+            at = {
+                    @At(
+                            value = "INVOKE",
+                            target = "Ldev/ftb/mods/ftblibrary/ui/input/MouseButton;isMiddle()Z",
+                            ordinal = 0
+                    ),
+                    @At(
+                            value = "INVOKE",
+                            target = "Ldev/ftb/mods/ftbquests/client/gui/quests/QuestPanel;isDraggingSelectionBox()Z",
+                            ordinal = 0
+                    )
+            }
     )
     private boolean queststools$drawBoxWhileBoxSelecting(boolean original) {
         return original || BoxSelectState.active;
